@@ -47,11 +47,19 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: 'LeadFlow CRM API Docs',
 }));
 
+// Hello check
+app.get('/api/v1/hello', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'Hello from LeadFlow CRM API',
+  });
+});
+
 // Health check
 app.get('/api/v1/health', (_req, res) => {
   res.json({
     success: true,
-    message: 'LeadFlow CRM API is running',
+    message: 'LeadFlow CRM API is healthy',
     data: {
       status: 'healthy',
       timestamp: new Date().toISOString(),

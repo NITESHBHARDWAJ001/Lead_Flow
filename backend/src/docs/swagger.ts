@@ -35,7 +35,10 @@ const options: swaggerJsdoc.Options = {
       { name: 'Dashboard', description: 'Analytics and dashboard' },
     ],
   },
-  apis: ['./src/modules/**/*.routes.ts', './src/modules/**/*.routes.js'],
+  apis:
+    env.NODE_ENV === 'production'
+      ? ['./dist/modules/**/*.routes.js']
+      : ['./src/modules/**/*.routes.ts', './src/modules/**/*.routes.js'],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
