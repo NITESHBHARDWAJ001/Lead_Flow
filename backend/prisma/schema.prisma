@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+enum LeadStatus {
+  INTERESTED
+  NOT_INTERESTED
+  CONVERTED
+}
+
+enum LeadSource {
+  CALL
+  WHATSAPP
+  FIELD
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(EMPLOYEE)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdLeads          Lead[]            @relation("LeadCreatedBy")
+  assignedLeads         Lead[]            @relation("LeadAssignedTo")
+  leadStatusChanges     LeadStatusHistory[]
+
+  @@map("users")
+}
+
+model Lead {
+  id     String     @id @default(cuid())
+  name   String
+  phone  String
+  email  String?
+  source LeadSource
+  status LeadStatus @default(INTERESTED)
+  notes  String?
+
+  createdById  String
+  assignedToId String
+
+  createdBy  User @relation("LeadCreatedBy", fields: [createdById], references: [id])
+  assignedTo User @relation("LeadAssignedTo", fields: [assignedToId], references: [id])
+
+  statusHistory LeadStatusHistory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("leads")
+}
+
+model LeadStatusHistory {
+  id        String     @id @default(cuid())
+  leadId    String
+  oldStatus LeadStatus?
+  newStatus LeadStatus
+  changedById String
+
+  lead      Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  changedBy User @relation(fields: [changedById], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@map("lead_status_history")
+}
