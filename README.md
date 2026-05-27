@@ -133,6 +133,7 @@ Swagger docs at: `http://localhost:5000/api-docs`
 
 ```bash
 cd frontend
+cp .env.example .env
 npm install
 npm run dev
 ```
@@ -154,6 +155,12 @@ Frontend runs at: `http://localhost:3000`
 | `JWT_EXPIRES_IN` | Token expiry | `7d` |
 | `CORS_ORIGIN` | Allowed frontend origin | `http://localhost:3000` |
 | `RATE_LIMIT_MAX` | Requests per window | `100` |
+
+### Frontend (`.env`)
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_BASE_URL` | Frontend API base URL for local development and deployment | `http://localhost:5000/api/v1` |
 
 ---
 

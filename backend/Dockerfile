@@ -28,6 +28,9 @@ COPY --from=builder --chown=nodejs:nodejs /app/package.json ./package.json
 
 RUN mkdir -p logs && chown nodejs:nodejs logs
 
+COPY --from=builder --chown=nodejs:nodejs /app/docker-entrypoint.sh ./docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
+
 USER nodejs
 
 EXPOSE 5000
@@ -35,4 +38,4 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
   CMD wget -qO- http://localhost:5000/api/v1/health || exit 1
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
