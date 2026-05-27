@@ -2,6 +2,11 @@
 
 A modern, production-ready Lead Management CRM system built with a clean full-stack TypeScript architecture. Designed to demonstrate SaaS-grade engineering practices.
 
+## Project Docs
+
+- [Backend guide](backend/README.md)
+- [Frontend guide](frontend/README.md)
+
 ---
 
 ## Features
